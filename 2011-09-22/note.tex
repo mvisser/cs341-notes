@@ -1,0 +1,95 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\begin{document}
+
+\title{CS 341 Notes}
+\author{Matthew Visser}
+\date{Sep 22, 2011}
+\maketitle
+
+\section{Divide and Conquer}
+
+In Latin, \textit{divide et impera}.
+
+These algorithms are typically recursive.
+
+Three components
+\begin{enumerate}
+    \item Divide
+        \begin{itemize}
+            \item Would like these to be equally sized.
+            \item Minimize \# of subproblems we could have.
+            \item Sub-problems should be ``easy'' to compute.
+        \end{itemize}
+    \item Conquer
+        \begin{itemize}
+            \item Subproblems $\to$ independent.
+        \end{itemize}
+    \item Combine
+        \begin{itemize}
+            \item Shouldn't be ``too'' hard. If it is, it can increase time
+                complexity.
+        \end{itemize}
+\end{enumerate}
+
+Consider $n!$:
+\[
+n! = \begin{cases}
+    1 & n=1,0\\
+    n \times (n-1)! & n>1
+\end{cases}
+\]
+
+We're breaking the problem down, but have very small steps.  Consider also
+quicksort. It can have a bad worst case if we choose a bad pivot.  Mergesort
+does better --- it always splits the problem into two pieces.
+
+\subsection{Example --- Merge Sort}
+
+Consider mergesort:
+\[
+T(n) = \begin{cases}
+    0 & n=1\\
+    T(\lfloor \frac{n}{2} \rfloor + T(\lceil \frac{n}{2} \rceil) + T(merge) &
+    n>1
+\end{cases}
+\]
+
+Assume $ T(merge) \in \Theta(n)$.
+\[
+T(n) = \begin{cases}
+    0 & n=1\\
+    T(\lfloor \frac{n}{2} \rfloor + T(\lceil \frac{n}{2} \rceil) + \Theta(n) &
+    n>1
+\end{cases}
+\]
+
+Assume that $n=2^k$.
+\begin{eqnarray*}
+T\left(n\right) &=& 2T\left(\frac{n}{2}\right) + \Theta\left(n\right) \\
+&\leq& 2T\left(\frac{n}{2}\right) + c\cdot n \\
+&\leq& 2\cdot 2 T\left(\frac{n}{4}\right) + c\frac{n}{2} + cn \\
+&\leq& 4\left(wT\left(\frac{n}{8}\right) + c\frac{n}{4}\right) + 2cn \\
+&\leq& 2^3 T\left(\frac{n}{2^3}\right) + 3cn\\
+&\leq& 2^k T(1) + k\cdot c \cdot n\\
+&=& n\cdot T(1) + c \cdot n \cdot \log\left(n\right)
+\end{eqnarray*}
+
+This shows us that merge sort is $T(n) \in O(n \log n)$. Notice that as long as
+$T(1) \in O(\log n)$, this still holds.
+
+We can prove that this works for any number by using induction.
+\textit{See Slides}.
+
+\end{document}
+% vim: tw=80
