@@ -1,0 +1,127 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+\usepackage{algorithmic}
+
+\begin{document}
+
+\title{CS 341 Notes}
+\author{Matthew Visser}
+\date{Sep 15, 2011}
+\maketitle
+
+\section{Runtime Analysis}
+
+
+\subsection{Input Size}
+
+Ideally $n$ is the number of bits used to code the input to the algorithm.
+In practice we consider the bit length of the various parameters specifying the
+problem \textit{e.g.}\ number of items, number of vertices and edges.
+
+Input: $N( pq ),\quad p>2, q>2$\\
+Output: $p,q$
+
+\begin{algorithmic}
+    \STATE $p \gets 3$
+    \WHILE { $  p \not | N ) $ }
+        \STATE $p \gets p + 2$
+    \ENDWHILE
+    \RETURN $p, \frac{N}{p}$
+\end{algorithmic}
+
+Input size is actually $n = \log_2(N)$ since it is represented in binary,
+\textit{i.e.} there are that many bits.
+
+\section{Asymptotic Notation}
+
+This is review\dots
+
+\begin{itemize}
+    \item When used for an algorithm, it means worst case running time is at
+        most this large
+    \item When used for a problem, it means the best known algorithm has this
+        worst-case running time
+    \item Need to be able to prove from definition.
+    \item Should be comfortable using notation and other functions such as
+        $\log(n)$.
+    \item Although you might see an expression such as $n^2 + 3n = O(n^2)$,
+        this is not an equality, in fact, it is an implied inequality.
+\end{itemize}
+
+\subsection{Big-O Notation}
+
+We say $f(n) \in O(g(n))$ if $ \exists c,n_0 > 0 $ such that $\forall n > n_0,\, 0
+\leq f(n) \leq c \cdot g(n)$.
+
+No function will get bigger than this function, but may be asymptotic to it.
+
+\subsection{Big-$\Omega$}
+
+We say $f(n) \in \Omega(g(n)$ if $\exists c, n_0 > 0$ such that $f(n) \ge c \cdot
+g(n) \ge 0$.
+
+No algorithm will be less than this - asymptotic from the bottom.
+
+\subsection{Big-$\Theta$}
+
+We say $f(n) \in \Theta(g(n))$ if $\exists c_1, c_2, n_0$ such that $\forall n >
+n_0, \, c_1 g(n) \leq f(n) \leq c_2 g(n)$.
+
+Can show that $f(n) \in O(g(n)$ and $f(n) \in \Omega(g(n))$, then $f(n) \in
+\Theta(g(n))$.
+
+\subsection{Little-o}
+
+We say $f(n) \in o(g(n))$ if $\forall c > 0 \exists n_0 > 0$ such that $\forall
+n > n_0,\, 0 < f(n) \leq c \cdot g(n)$
+
+\subsection{Little-$\omega$}
+
+We say $f(n) \in o(g(n))$ if $\forall c > 0 \exists n_0 > 0$ such that $\forall
+n > n_0,\,  f(n) \geq c \cdot g(n)$
+
+\subsection{Relationships Between Order Notation}
+
+See slides.
+
+If we know the complexity of two functions, the complexity of the sum is the
+maximum of the complexities of the two.
+
+\subsection{Example}
+
+We will work out the complexity of the sum
+\[
+\sum_{i=1}^{n}\log(i) \in \Theta(n\log n)
+\]
+
+O:
+
+\[
+\sum_{i=1}^{n}\log(i) \leq \sum_{i=1}^{n} \log n = n \log n \in O(n\log n)
+\]
+
+$\Omega$:
+
+\[
+\sum_{i=1}^{n}\log(i)  \ge \sum_{i=\lceil\frac{n}{2}\rceil}^{n} \log i \ge
+\sum_{i=\lceil\frac{n}{2}\rceil}\log \lceil\frac{n}{2}\rceil =
+\left(n-\lceil\frac{n}{2}\rceil+1\right)  \log \lceil\frac{n}{2}\rceil
+= \left( \lfloor \frac{n}{2}\rfloor + 1 \right)  \ge \frac{n}{4} \log
+\frac{n}{2} = \frac{n}{4}\left(\log n - 1\right) \ge \frac{n}{4} \log n -
+\frac{n}{4} \in \Omega(n \log n)
+\]
+
+
+
+
+\end{document}
+% vim: tw=80

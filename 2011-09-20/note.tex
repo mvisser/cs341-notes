@@ -1,0 +1,143 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\begin{document}
+
+\title{CS 341 Notes}
+\author{Matthew Visser}
+\date{Sep 20, 2011}
+\maketitle
+
+\section{Runtime Analysis}
+
+$f(n) \in O(g(n) \text{ iff } \exists c>0, n_0>0 \text{ such that } \forall n >
+n_0 \quad 0 \leq f(n) \leq c\cdot g(n)$.
+
+$f(n) \in o(g(n) \text{ iff } \forall c>0 \exists n_0>0 \text{ such that }
+\forall n > n_0 \quad 0 \leq f(n) \leq c\cdot g(n)$.
+
+Easy way to show $f(n) \in o(g(n)$ is:
+\begin{equation}
+    \lim_{n \to \infty} \frac{f(n)}{g(n)} = 0
+\end{equation}
+
+This is very nice if you use L'Hopital's rule.  This is not a good proof by
+definition, but is a good way to show it's true.
+
+\subsection{Example proving $O(n)$}
+
+Show 
+\begin{equation}
+    10n^2 + 100n - 3 \in O(n^2)
+\end{equation}
+
+Show $\exists c,n_0$.
+
+\begin{eqnarray}
+    10n^2 + 100n-3 &\leq& cn^2\\
+    100n - 3 &\leq& (c-10)n^2\\
+    \underbrace{ 1-\frac{3}{100n}}_{<1} &\leq& \left( \frac{c-10}{100} \right)n\\
+    \frac{c-10}{100}&=& 1\\
+    c&=&110
+\end{eqnarray}
+
+\subsection{Another example for a sum}
+
+Show
+\begin{equation}
+    \sum_{i=1}^{n}\log(i) \in \theta\left( n\log(n) \right)
+\end{equation}
+
+\begin{eqnarray}
+    \sum_{i=1}^{n}\log(i) &\leq& \sum_{i=1}^{n}\log n = n \log n\\
+    \sum_{i=1}^{n}\log(i) &\geq& \sum_{i=\lfloor\frac{n}{2}\rfloor}^n \log i\\
+\end{eqnarray}
+
+\subsection{O-notation Subtleties}
+
+See slides page 10.
+
+\section{Divide and Conquer}
+
+Example: Mergesort.
+
+\subsection{Example: Multiplying arbitrarily large numbers}
+
+Have two numbers of size $n$. Then the output size is $2n$. The complexity of
+multiplying two numbers is $\Theta(n^2)$. Is there a lower bound for multiplying
+two integers? Yes, must be $\Omega(n)$ since we have to iterate every digit of
+both numbers. But can we do better? Let's see.
+
+Multiply
+\begin{tabular}{r|l}
+    $A$ & $A_12^{n} + \dots + A_0$\\
+    $\times B$ & $B_12^{n} + \dots + B_0$\\
+    \hline
+\end{tabular}
+
+
+\begin{equation}
+    AB = \underbrace{A_1B_1}_{T(\frac{n}{2}}\underbrace{2^n}_{\Theta(n)} + (A_1B_0 + A_0B_1)2^{\frac{n}{2}} + \dots + A_0B_0
+\end{equation}
+
+Where $T(n)$ is matrix addition, $\Theta(n)$ is the exponentiation of 2. So the
+operation is $4T\left(\frac{n}{2}\right) + \Theta(n)$ where
+\begin{equation}
+    T(n) = \begin{cases}
+        \Theta(1),\quad n=1\\
+        4T\left( \frac{n}{2} \right) + \Theta(n)
+    \end{cases} = \Theta(n^2)
+\end{equation}
+
+\begin{equation}
+    T(n) = \begin{cases}
+        \Theta(1),\quad n=1\\
+        2T\left( \frac{n}{2} \right) + \Theta(n)
+    \end{cases} = \Theta(n \log n)
+\end{equation}
+
+\begin{equation}
+    \underbrace{(A_1 + A_0)(B_1 + B_0)}_{T\left( \frac{n}{2} \right) +
+    \Theta(n)} =\underbrace{ A_1 B_1}_{T\left( \frac{n}{2} \right)} + A_1 B_0 + A_0 B_1 + A_0 B_0
+\end{equation}
+
+So compute first and last terms, then subtract from multiplication.
+
+\subsection{Example: Matrix Multiplication}
+
+\begin{equation}
+    AB = 
+    \left[
+    \begin{matrix}
+        A_{11} & A_{12}\\
+        A_{21} & A_{22}
+    \end{matrix}
+    \right]
+    \cdot
+    \left[
+    \begin{matrix}
+        B_{11} & B_{12}\\
+        B_{21} & B_{22}
+    \end{matrix}
+    \right]
+    =
+    \left[
+    \begin{matrix}
+        [A_{11}B_{11} + A_{12}B_{21}]  & [\dots]\\
+        [A_{21}B_{11} + A_{22}B_{21} & [\dots]
+    \end{matrix}
+    \right]
+\end{equation}
+
+
+\end{document}
+% vim: tw=80
