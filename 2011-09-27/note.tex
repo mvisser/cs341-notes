@@ -1,0 +1,235 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+\usepackage{qtree}
+
+\begin{document}
+
+\title{CS 341 Notes}
+\author{Matthew Visser}
+\date{Sep 27, 2011}
+\maketitle
+
+The runtime for fast integer multiplication can be expressed with 
+\begin{eqnarray}
+    T(1) &=&  1\\
+    T(n) &=&  3T\left(\frac{n}{2}\right) + \Theta(n)
+\end{eqnarray}
+
+There are three methods for solving recurrences:
+\begin{itemize}
+    \item Recursion Tress
+    \item Master Theorem
+    \item Guess and Check
+\end{itemize}
+
+\section{Recursion Trees}
+
+We will analyze mergesort, on page 1 of recursion trees slides.
+
+We have the reccurence
+\begin{eqnarray}
+    T(1) &=&  0\\
+    T(n) &=&  T\left( \lfloor \frac{n}{2}\rfloor \right) + T\left( \lceil
+    \frac{n}{2}\rceil \right) + \Theta(n)
+\end{eqnarray}
+
+\begin{eqnarray}
+    T(1) &=&  0\\
+    T(n) &\leq&  T\left( \lfloor \frac{n}{2}\rfloor \right) + T\left( \lceil
+    \frac{n}{2}\rceil \right) + an
+\end{eqnarray}
+
+\Tree
+[
+.{$T(n)$}
+[
+.{$T(\lfloor \frac{n}{2}\rfloor$}
+{$T(\lfloor \frac{\lfloor\frac{n}{2}\rfloor}{2}\rfloor$}
+{$T(\lfloor \frac{\lceil\frac{n}{2}\rceil}{2}\rfloor$}
+]
+{$T(\lceil \frac{n}{2}\rceil$}
+]
+
+\Tree
+[
+.{$an$}
+[
+.{$a\lfloor \frac{n}{2}\rfloor$}
+{$a\lfloor \frac{\lfloor\frac{n}{2}\rfloor}{2}\rfloor$}
+{$a\lfloor \frac{\lceil\frac{n}{2}\rceil}{2}\rfloor$}
+]
+{$a\lceil \frac{n}{2}\rceil$}
+]
+
+\textbf{Cost per level}:
+
+\begin{enumerate}
+    \item $an$
+    \item $an + \lceil \frac{n}{2} \rceil + \lfloor \frac{n}{2}\rfloor$
+\end{enumerate}
+
+This is getting tedious with floors and ceilings, so ignore them and use
+$T(n) \leq 2T(\frac{n}{2} + an$.
+
+Try again.
+\Tree
+[
+.{$an$}
+[
+.{$a \frac{n}{2}$}
+{$a \frac{n}{4}$}
+{$a \frac{n}{4}$}
+]
+{$a \frac{n}{2}$}
+]
+
+Now we see for every level we have $an$ as a cost. Each level $x$ has $2^x$
+nodes. We know we have approximately $\log(n)$ levels, so we end up with
+$an\cdot \log(n)$ as a cost. So
+\begin{eqnarray}
+    T &=&  \sum_{i=0}^{k-1}an \\
+    T &=&  an\cdot \log(n) \\
+    T &=& O(n \log n)
+\end{eqnarray}
+
+Note that we made a lot of assumptions about the above equation --- We assumed
+that $n$ was a power of 2, and that we could get rid of the floor and ceiling
+functions.
+
+\subsection{Examples}
+
+\begin{enumerate}
+    \item Karatsuba integer multiplication
+
+        The recursion is:
+        \begin{equation}
+            T(n) = \begin{cases}
+                1 & n = 1\\
+                3T\left( \frac{n}{2} \right) + \Theta(n) & n > 1
+            \end{cases}
+        \end{equation}
+
+        \Tree
+        [
+        .{$an$}
+        [
+        .{$a\frac{n}{2}$}
+        [
+        .{$a\frac{n}{4}$}
+        [
+        .{$a\frac{n}{2^3}$}
+        ]
+        [
+        .{$a\frac{n}{2^3}$}
+        ]
+        [
+        .{$a\frac{n}{2^3}$}
+        ]
+        ]
+        [
+        .{$a\frac{n}{2^2}$}
+        {\dots}
+        ]
+        [
+        .{$a\frac{n}{4}$}
+        {\dots}
+        ]
+        ]
+        [
+        .{$a\frac{n}{2}$}
+        {\dots}
+        ]
+        [
+        .{$a\frac{n}{2}$}
+        {\dots}
+        ]
+        ]
+
+        At every level we have $\frac{an\cdot 3^k}{2^k}$ and at the last level
+        we have $3^k$, one for each node.
+
+        So we have 
+        \begin{eqnarray}
+            T(n) &=&  3^k + \sum_{i=0}^{\log_2(n)-1}
+            an\left(\frac{3}{2}\right)^i\\
+            T(n) &=&  3^k + an\frac{\left(\frac{3}{2}\right)^{\log
+            n}-1}{\left(\frac{3}{2}\right) - 1}\\
+            T(n) &\leq&  3^k + an^{\log(3)}\\
+            T(n) &\leq&  (a+1)n^{\log(3)}\\
+            T(n) &=&  O(n^{\log3})
+        \end{eqnarray}
+    \item Strassen
+\end{enumerate}
+
+\section{Master Theorem}
+
+The master theorem gives the solution of recurrences of the form $T(n) = aT(n/b)
++ f(n)$.
+
+There are three cases for the theorem.  It is applicable even when the
+recurrences involve the standard floors and ceilings in the partition, so long
+as the sloppy form looks like the above equation.
+
+\textbf{Theorem}: Let $a \geq 1, b > 1$ be constants. Let
+\begin{equation}
+    T(n) = aT\left(\frac{n}{b}\right) + f(n)
+    \label{MasterCond}
+\end{equation}
+where $n/b$ denotes either $\lceil n/b\rceil$ or  $\lfloor n/b \rfloor$. Then
+\begin{equation}
+    T(n) \in \begin{cases}
+        \Theta(n^{\log_b(a)}) & f(n) \in O(n^{\log_b(a - \varepsilon)})\\
+        \Theta(n^{\log_b(a)}\lg(n) & f(n)) \in \Theta(n^{\log_b(a)})\\
+        \Theta(f(n)) &f(n)\in \Omega(n^{\log_b(a + \varepsilon)}) \text{ and }
+        af\left( \frac{n}{b} \right) \leq cf(n)\\
+    \end{cases}
+    \label{MasterTheorem}
+\end{equation}
+
+\subsection{Example}
+
+We look at merge sort again.
+
+We have
+\begin{equation}
+    T(n) = 2T\left( \frac{n}{2} \right) + an
+\end{equation}
+
+$n^{\log_b a} = n^1$. Then $f(n) \in \Theta(n) = \Theta(n^{\log_b a}$
+
+Then by master theorem we get $T(n) \in \Theta( n \log n)$
+
+\subsection{Another Example}
+
+We have
+\begin{equation}
+    T(n) = 3T\left( \frac{n}{2} \right) + an
+\end{equation}
+
+$n^{\log_b a} = n^{\log_2 3} \approx n^{1.58}$.
+
+$f(n) = an \in O(n^{1.5})$ or $f(n) \in O(n^{\log_2 3 - \varepsilon})$ which
+follows the first case of the master theorem.
+
+THen by master theorem $T(n) \in \Theta(n^{\log 3})$
+
+\subsection{An Example That We Can't Do\dots}
+
+Consider $f(n) \in \Theta(n^x \log n)$. Cases 1 and 2 don't apply. Case 3
+doesn't apply either because $n^x \log n$ isn't of the form $\Omega(n^{\log_b a
++ \varepsilon}) = \Omega(n^{x + \varepsilon})$ no matter how small $\varepsilon
+> 0$ is.
+
+
+
+\end{document}
+% vim: tw=80
