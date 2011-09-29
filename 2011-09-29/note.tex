@@ -1,0 +1,187 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+\usepackage{qtree}
+
+\begin{document}
+
+\title{CS 341 Notes}
+\author{Matthew Visser}
+\date{Sep 29, 2011}
+\maketitle
+
+\section{Master Theorem}
+
+
+\subsection{Proof of the Master Theorem}
+On $n$ input.
+\Tree
+[
+.{$f(n)$}
+[
+.{$f(\frac{n}{b})$}
+{$f(\frac{n}{b^2})$}
+{\dots}
+{\dots}
+{\dots}
+]
+{\dots}
+{\dots}
+[
+.{$f(\frac{n}{b})$}
+{\dots}
+]
+]
+
+First level $a$ nodes, second $a^2$. So for the $k^\text{th}$ level we have
+$a^kf(\frac{n}{b^k})$. We get to the base level when $n=b^k \implies k =
+\log_b(n)$.
+
+Our base case has: $a^k = a^{\log_b(n)} = n^{\log_b(a)}$
+
+So assuming $n=b^\ell,\ \ell \in \mathbb{N}$.
+\[
+T(n) = T(1) n^{\log_b(a)} + \sum_{j=0}^{\log_b(a)-1} a^jf\left(\frac{n}{b^j}\right)
+\]
+
+There are a number of cases:
+\begin{enumerate}
+    \item \[
+        f \in O(n^{\log_b(a) - \varepsilon}) \implies f(n) \leq
+        cn^{\log_b(a)-\varepsilon}\]
+
+        Then we have
+        \begin{eqnarray*}
+            &&\sum_{i=1}^{k-1}a^i c\cdot\left( \frac{n}{b^i} \right)^{\log_b(a) -
+            \varepsilon}\\
+            &=& cn^{\log_b(a)-\varepsilon} \sum \frac{a^i}{\left( b^i
+            \right)^{\log_b(a)-\varepsilon}}\\
+            &=& cn^{\log_b(a)-\varepsilon} \sum \frac{a^i}{
+            \left(b^{\log_b(a)-\varepsilon}\right)^i}\\
+            &=& cn^{\log_b(a)-\varepsilon} \sum \frac{a^i}{a^i}b^{\varepsilon i}\\
+            &=& cn^{\log_b(a)-\varepsilon} \sum \left(b^\varepsilon\right)^i\\
+            &=& cn^{\log_b(a)-\varepsilon} \frac{(b^\varepsilon)^k -
+            1}{(b^\varepsilon)-1}\\
+        \end{eqnarray*}
+
+        We know $k = \log_b(n)$ so we get
+        \begin{eqnarray*}
+            && cn^{\log_b(a)-\varepsilon} \frac{(b^\varepsilon)^k -
+            1}{(b^\varepsilon)-1}\\
+            &=& cn^{\log_b(a)-\varepsilon}n^{-\varepsilon} \frac{n^\varepsilon -
+            1}{b^\varepsilon-1}
+        \end{eqnarray*}
+        Since $b^\varepsilon-1$ is just a constant, we get
+        \begin{eqnarray*}
+            && cn^{\log_b(a)-\varepsilon}n^{-\varepsilon} \frac{n^\varepsilon -
+            1}{b^\varepsilon-1}\\
+            &=& \frac{c}{b^\varepsilon - 1}n^{\log_b(a)-\varepsilon}n^{-\varepsilon}
+            (n^\varepsilon - 1)\\
+            &=& dn^{\log_b(a)-\varepsilon}n^{-\varepsilon}
+            (n^\varepsilon - 1)\\
+            &\in& O(n^{\log_b(a)})
+        \end{eqnarray*}
+        Where $d$ is a constant.
+
+    \item We have $f(n) \in \theta(n^{\log_b(a)}$:
+        \begin{eqnarray*}
+            &&\sum_{i=1}^{k-1} a^i c\left( \frac{n}{b^i} \right)^{\log_b(a)}\\
+            &=&cn^{\log_b(a)}\sum_{i=1}^{k-1} \frac{a^i}{a^i}\\
+            &=&ckn^{\log_b(a)}\\
+            &=&c\log_b(n)n^{\log_b(a)}\\
+            &\in&\Theta(\lg(n)n^{\log_b(a)})
+        \end{eqnarray*}
+
+    \item We have $f(n) \in \Omega(n^{\log_b(a)+\varepsilon}$:
+
+        \[
+        af\left( \frac{n}{b} \right)\leq cf(n),\ 0 < c < 1\\
+        \]
+        \begin{eqnarray*}
+            &&\sum_{i=0}^{k-1}a^if\left( \frac{n}{b^i} \right)\\
+            &=&f(n)+\sum_{i=1}^{k-1}a^if\left( \frac{n}{b^i} \right)\\ 
+        \end{eqnarray*}
+        This must be $\Omega(f(n))$ since we have a first of term of $f(n)$. We
+        must now show that it is $O(f(n)$ to prove that the recursion is
+        $\Theta(f(n))$.
+        \begin{eqnarray*}
+             \sum_{i=0}^{k-1}a^if\left( \frac{n}{b^i} \right) &=&  f(n) +
+            af\left( \frac{n}{b} \right) + a^2f\left( \frac{n}{b^2} \right) +
+            \dots\\
+            &\leq& f(n) + cf(n) + acf\left( \frac{n}{b} \right) + \dots\\
+            &\leq& f(n) + cf(n) + c^2f(n) + \dots
+        \end{eqnarray*}
+        This is because we know
+        \[
+        a^if\left( \frac{n}{b^i} \right) \leq c^if(n)
+        \]
+        So we get:
+        \begin{eqnarray*}
+            f(n)\sum_{i=0}^{k-1}c^i &=& f(n) \left( \frac{1-c^k}{1-c} \right)\\
+            &=& f(n) \left( \frac{1-c^{\log_b(n)}}{1-c} \right)\\
+            &=& f(n) \left( \frac{1-c^{\log_b(n)}}{1-c} \right)\\
+        \end{eqnarray*}
+        \begin{eqnarray*}
+            f(n)\sum_{i=0}^{k-1}c^i &\leq& f(n)\sum_{i=0}^{\infty} c^i\\
+            &=& f(n)\frac{1}{1-c}\\
+            &\in&O(f(n))
+        \end{eqnarray*}
+        This is as required, so we now have $T(n) \in \Theta(f(n))$.
+\end{enumerate}
+
+This proof is also available in the slides and the textbook. 
+
+\subsection{Using the Master Theorem}
+
+\begin{itemize}
+    \item State recurrences in precise form and sloppy form
+    \item If the theorem applies, use it on sloppy form, then the solution will
+        apply to the precise case
+    \item If the theorem does not apply, use recursion trees, then check using
+        induction.
+\end{itemize}
+
+\section{Guessing and Checking}
+
+\textbf{Example}: $T(n) = T(n-1) + 1$. The total cost is $n$. We must prove this
+(using induction).
+
+\textbf{Base Case}: Assuming $T(0) = 0$ so the base case is trivially true.
+
+\textbf{Inductive Step}:
+Assume true for $n-1$. Then we have $T(n) = T(n-1) + 1 = n-1 + 1 = n$ as
+required.
+
+We may want to use guess and check if we already know the answer and the master
+theorem may or not apply.
+
+\textbf{Example}: Merge sort split into 3. We can guess that we have a running
+time of $T(n) = n \log_3(n)$.
+
+By induction, we have\dots
+
+\textbf{Base Case}: $T(1) = 0$
+
+\textbf{Inductive Step}:
+We know that $T(n) = 3T\left(\frac{n}{3}\right) + n$. Assume this holds for
+up to and including $n-1$.
+
+\begin{eqnarray*}
+    T(n) &=&  3(n/3 \cdot \log_3(n/3)\\
+    &=& n \log_3(n/3) + n\\
+    \dots\\
+\end{eqnarray*}
+
+Sometimes when we guess and check, we may need to add lower order terms to our
+bounds.
+
+\end{document}
+% vim: tw=80
