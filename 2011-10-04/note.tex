@@ -1,0 +1,154 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+\usepackage{algorithmic}
+
+\begin{document}
+
+\title{CS 341 Notes}
+\author{Matthew Visser}
+\date{Oct  4, 2011}
+\maketitle
+
+\textbf{Readings:}
+
+Closest Pairs --- 33.4\\
+Selection --- 8.3 (9.1, 9.2)
+
+\section{Checking Your Guess}
+
+Suppose we guess, with a base case of $n=1$:
+\begin{equation}
+	T(n) = \begin{cases}
+		n \log_3 n + dn & n > 1\\
+		1 \log_3 1 = 0 & n=1
+	\end{cases}
+\end{equation}
+
+Assume true for all $m: 1\leq m < n$.
+\begin{equation}
+	T^*(m) = m \log_3 m
+\end{equation}
+
+Consider $m=n$.
+\begin{eqnarray}
+	T(n) &=& 3T(\frac{n}{3} + dn\\
+	&=& 3 \left( \frac{n}{3} \log_3 \frac{n}{3} \right) + dn \\
+	&=&  n \left( \log_3 n - \log_3 3  \right) + dn\\
+	&=&  n \log_3n - n + dn\\
+	&=& n \log_3 n - n(d-1)
+\end{eqnarray}
+
+If we add a constant multiple $k$ then if $k=d$ this cancels out nicely.
+
+Another example\dots
+
+Suppose we guess, with a base case of $n=1$:
+\begin{equation}
+	T(n) = \begin{cases}
+		n \log_3 n  + c& n > 1\\
+		c & n=1
+	\end{cases}
+\end{equation}
+
+Guess $T(m) \leq km$.
+
+$T(1) = c \leq k\cdot 1 = k$
+
+Inductive stype:
+
+Assume $\forall m:1\leq m < n$
+\begin{equation}
+	T(m) \leq km
+\end{equation}
+
+Now consider $T(n)$:
+\begin{eqnarray}
+	T(n) &\leq& 2T(\frac{n}{2}) + c \\
+	&\leq& 2\left(\frac{kn}{2}\right) + c\\
+	&=&  kn + c
+\end{eqnarray}
+
+Since $c>0$ we can't prove this. But we can change our guess.
+
+Guess $T(m) \leq km - q$
+
+Consider $T(1) = c \leq k\cdot 1 - q$. We can easily pick $k,q$ such that they
+satisfy this condition.
+
+Assume $\forall m:1\leq m < n$
+\begin{equation}
+	T(m) \leq km - q
+\end{equation}
+
+Now consider $T(n)$:
+\begin{eqnarray}
+	T(n) &\leq& 2T(\frac{n}{2}) + c \\
+	&\leq& 2\left(\frac{kn}{2}-q\right) + c\\
+	&=&  kn -2q + c\\
+	&=&  kn - q + (c-q)
+\end{eqnarray}
+
+We can assume that $c-q\leq 0$, then $c \leq k\cdot 1 - q$.
+
+Try $k=2c,\ q=c$. This will work out if we prove it with induction.
+
+\section{Closest Pair Problem}
+
+The closest pair problem is to find the two closest points on a plain given a
+set of points.
+
+\begin{equation}
+	\text{dist}(a,b) = \sqrt{\left( a_1x - b_1x \right)^2 +
+	\left( q_1y - b_1y \right)^2}
+\end{equation}
+
+\subsection{Brute Force to Something Better}
+
+To brute force this we have $A$, an array of all our points.
+
+\begin{algorithmic}
+	\FOR{ $i$ from 1 to $n$}
+	\FOR{ $j$ from $i$ to $n$}
+	\STATE check dist($A_i,A_j$)
+	\IF{ smaller}
+	\STATE update min
+	\ENDIF
+	\ENDFOR
+	\ENDFOR
+\end{algorithmic}
+
+This is $\Theta(n^2)$. This is terrible, how can we do better? Maybe divide and
+conquer?
+
+Maybe we can divide the points after sorting by their $x$ co-ordinate. This is
+$\Theta(n \log n)$. After partitioning, we have a left and right side. We can
+recursively calculate distances between points on either side.
+
+\begin{algorithmic}
+	\STATE $\ell = \text{CP}(\text{Left} A)$
+	\STATE $r = \text{CP}(\text{Right} A)$
+	\STATE $d = \min(l,r)$
+\end{algorithmic}
+
+We can ignore any more checking for points between partitions if the $x$
+distance from the right-most point on the left side and left-most point on the
+right side is greater than the minimum distance from the left and right side.
+
+We can create a perimiter of the maximum distance we can have between our
+dividing point and the points on the left and right side. We will only hav eto
+test at mst 6 points (see diagram) to determine if there is a distance that is
+less than $d$.
+
+
+\end{document}
+
+% vim: tw=80
