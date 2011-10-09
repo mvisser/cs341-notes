@@ -1,0 +1,60 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\begin{document}
+
+\title{CS 341 Notes}
+\author{Matthew Visser}
+\date{Oct  6, 2011}
+\maketitle
+
+\section{Closest Pair}
+
+Most of the stuff is the same as last class. Basically sort by $x$, then any
+points close to a point near the line is only $d$ distance away at least. There
+can only really be 6 of them.
+
+\section{Linear Time Selection}
+
+We have an array of $n$ numbers and an integer $i$, find the $i$th smallest
+number. The easieast solution is to sort and grab the $i^{\text{th}}$ element.
+
+We could also go through the array once and keep track of the $i$ smallest
+numbers we have seen.
+
+\textbf{Median}: is $\lceil \frac{n}{2}\rceil$\textsuperscript{th} element in
+$A$, the array.
+
+Consider finding a median $p$ and then partitioning the array into anything
+less, even to, and more than $p$. $k$ is the numbered element we want to find.
+\begin{enumerate}
+	\item $k \leq |\text{LESS}| \to \text{Select(LESS)}$
+	\item $|\text{LESS}|<k \leq |\text{LESS} + \text{EQUAL}| \to p$
+	\item $k > |\text{LESS}| + |\text{EQUAL}| \to \text{Select}( \text{MORE},
+		k-|\text{LESS}| - |\text{EVEN}|)$
+\end{enumerate}
+
+We have to:
+\begin{itemize}
+	\item compute the partition
+\end{itemize}
+
+\begin{equation}
+	T_k(n) \leq \underbrace{\Theta(n)}_{\text{divide}} +
+	\underbrace{T\left(\frac{n}{5}\right)}_{\text{find }p} +
+	\underbrace{T\left( \frac{3n}{4} \right)}_{\text{next partition}}
+\end{equation}
+
+We would want $T(n) \leq cn$.
+
+\end{document}
+% vim: tw=80
