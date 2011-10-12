@@ -1,0 +1,171 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\begin{document}
+
+\title{CS 341 Notes}
+\author{Matthew Visser}
+\date{Oct 11, 2011}
+\maketitle
+
+\section{Greedy Algorithms}
+
+Typically this is for optimization, minimization, maximization.
+
+Greedy algorithms take what is currently the best answer and returns it.
+
+\begin{itemize}
+	\item Simple idea, but doesn't always work
+		\begin{itemize}
+			\item used to solve optimization problems that involve choosing
+				objects, events, from a set
+		\end{itemize}
+	\item The strategy
+		\begin{itemize}
+			\item at each step, make the best next choice
+			\item Never backtrack or change past choices
+			\item never look ahead to see if this choice has negative
+				consequences.
+		\end{itemize}
+	\item Depending on the problem, this may or may not give a good answer.
+	\item The text treats greedy algorithms as a special case of dynamic
+		programming.
+\end{itemize}
+
+\subsection{Example --- Make Change}
+
+How do we give back change for payment minimizing the amount of coins we give
+back. The coins are in denominations of:
+\begin{itemize}
+	\item 1c
+	\item 5c
+	\item 10c
+	\item 25c
+	\item 50c
+	\item 100c
+	\item 200c
+\end{itemize}
+
+Say we have to give out 350c in change. What is the minimum amount of change we
+give back?
+
+Find the biggest coin that fits, and take as many of it as we can. This gives us
+6 coins that we give.
+
+This works fine, but how can we prove that this will give us the right answer?
+
+Consider if we had coins of 1c, 49c, 51c, 53c. The greedy algorithm we have
+would give us 48 coins when the optimal solution is 2 coins. So this algorithm
+doesn't always give a solution if the denominational system is different, and
+doesn't always give a good solution for this.
+
+\subsection{Properties of Greedy Algorithms}
+
+\begin{itemize}
+	\item Usually very simple and very fast. Considering out example it was
+		$O(m)$ where $m$ is the number of coind denominations we have.
+	\item Not really easy to prove it works all the time.
+	\item At each stage we have a partial solution that leads us to the new
+		solution.
+\end{itemize}
+
+\subsection{Example --- Scheduling Activities}
+
+\textbf{Instance:} a set of $n$ activities, each with start times $s_i$ and
+finishing time $f_i$.
+
+\textbf{Problem}: find the subset of activities with the maximum number of
+non-overlapping activities.
+
+\begin{center}
+\emph{*** See slide ``Scheduling Activities'' ***}
+\end{center}
+
+We say activities $i$ and $j$ are \emph{compatible} if the do \textbf{not}
+overlap, \textit{i.e.}, $s_i \ge f_j$ or $s_j \ge f_i$.
+
+Chose the activity with the earliest finishing time, delete it, and those that
+are incompatible with the chosen activity, then repeat.
+
+\begin{itemize}
+	\item Sort activities by finishing time
+	\item choose first activity
+	\item repeatedly choose next activity that is compatible with all previous
+		choices
+\end{itemize}
+
+\textbf{Notation}:
+
+\begin{itemize}
+	\item Let $S = \{a_1, a_2,\dots,a_n\}$ be the activities
+	\item Assume each one is represented by a half-open interval, \textit{i.e.},
+		$a_i = [s(a_i),f(a_i))$.
+	\item Sort the list of activities such that $f(a_1 \le f(a_w\le \dots \le
+		f(a_n)$.
+	\item So compatibility of $a_i$ and $a_k$ implies that $s(a_k) \ge f(a_i)$
+		or $s(a_i) \ge f(a_k)$.
+\end{itemize}
+
+\textbf{Proof}:
+
+Prove greedy selection will give an optimal solution for the activity selection
+problem.
+
+\begin{equation}
+	G = \{g_1,g_2,g_3,\dots g_m\}
+\end{equation}
+
+\begin{equation}
+	H = \{h_1,h_2,\dots,h_k,h_{k+1},\dots,h_m\}
+\end{equation}
+
+We will inductively show that we can replace all choices with the greedy choice
+and maintain optimality.
+
+We know that
+\begin{equation}
+	f(g_1) \le f(h_1)
+	\label{ineq}
+\end{equation}
+The finishing value of $g_1$ is smaller or equal to the finishing value of
+$h_1$.
+
+Now we change $h_1$ to $g_1$. Does this destroy the ordering for $H$? We know
+$h_1$ and $h_2$ are compatible, $s(h_2) \ge f(h_1)$. We take equation
+\eqref{ineq}, and we know that $g_1$ and $g_2$ are compatible.
+
+So we know that we have roughly equivalent solutions to a certain point. We have
+\begin{equation}
+	H = \{g_1,g_2,\dots,g_k,h_{k+1},\dots,h_m\}
+	\label{newH}
+\end{equation}
+We say
+\begin{equation}
+	H^* = \{h_{k+1},\dots,h_m\}
+	\label{starH}
+\end{equation}
+
+$H^*$ is compatible with any events before it. We can claim $H^*$ is the optimal
+solution to a subproblem of the problem before it. Then we can replace $H$ with
+$G$ and this will still be an optimal solution.
+
+\subsection{Scheduling Activities into Rooms}
+
+See notes.
+
+\subsection{Fractional Knapsack}
+
+A thief breaks into a warehouse full of bulk materials. Each type of material is
+conveniently labelled with the price per pound.
+
+\end{document}
+% vim: tw=80
