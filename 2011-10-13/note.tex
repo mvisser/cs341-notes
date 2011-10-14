@@ -1,0 +1,76 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\begin{document}
+
+\title{CS 341 Notes}
+\author{Matthew Visser}
+\date{Oct 13, 2011}
+\maketitle
+
+\section{Greedy Algorithms}
+\subsection{Knapsack Problem}
+
+See notes.
+
+\subsection{Task Scheduling}
+
+See notes.
+
+There are a number of approaches
+\begin{itemize}
+	\item shortest time first
+	\item Deadline first
+	\item slackness --- deadline subtract time.
+\end{itemize}
+
+Shortest time doesn't work, and we can construct an example where it doesn't.
+Same with slackness.
+
+Earliest deadline seems like the best choice.
+
+\section{Dynamic Programming}
+
+\begin{itemize}
+	\item Very powerful tool to solve optimization problem.
+	\item Not as efficient as greedy, but a lot better than brute force.
+	\item Has a recursive nature
+		\begin{itemize}
+			\item subproblems must be able to be solved exactly
+			\item Subproblems often overlap
+		\end{itemize}
+\end{itemize}
+
+\subsection{Example --- Making Change}
+
+Greedy algorithm works if we have nice denominations, but we want to do this
+with arbitrary denominations.
+
+We want to be able to phrase the making change problem recursively.
+
+What is the minimum amount of coins to make change for a value $i$,
+\texttt{coins[i]}.
+
+\texttt{coins[35]} can be divided into \texttt{coins[34]}, \texttt{coins[30]},
+\texttt{coins[25]}.
+
+$\texttt{coins[35]} = 1 + \min\{\texttt{coins[34]}, \texttt{coins[30]},
+\texttt{coins[25]}\}$
+
+In dynamic programming, we want to generate a table of all subproblems we have
+encountered. Then, when we need an answer, we use it if it's calculated.
+
+If you look at running time, we have $O(m \cdot n) = O(m \cdot 2^k)$ where $k$
+is the number of bits of the number, and $m$ is the number of denominations.
+
+\end{document}
+% vim: tw=80
