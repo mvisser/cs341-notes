@@ -1,0 +1,107 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\begin{document}
+
+\title{CS 341 Notes}
+\author{Matthew Visser}
+\date{Oct 18, 2011}
+\maketitle
+
+\numberwithin{equation}{subsection}
+
+\section{Dynamic Programming}
+
+The problem we want to solve must have some sort of recursive nature, or
+subproblems.
+
+Dynamic programming sort of implies that we have two passes. One to calculate
+the optimal value, and one to calculate the solution for that value.
+
+\subsection{Terminology}
+
+See slides
+
+\subsection{Notes on Dynamic Programming}
+
+\begin{itemize}
+	\item Subproblems are the core of dynamic programming. We want an array of
+		solutions to subproblems.
+	\item Three steps
+		\begin{enumerate}
+			\item Describe subproblems
+			\item Determine how an array will be used to evaluate scores
+				\begin{itemize}
+					\item What are the dimensions, how do we store, what is the
+						base case, where do we find the optimal score?
+				\end{itemize}
+			\item Recovery of the solution --- Where do we trace back to find
+				the solution.
+		\end{enumerate}
+\end{itemize}
+
+\subsection{Example --- Longest Common Subsequence}
+
+Some notation:
+
+\begin{itemize}
+	\item A \emph{subsequence} of a string $X$ is a string that can be obtained
+		by deleting some of the characters from $X$. Characters maintain their
+		original order.
+	\item A \emph{prefix} of $X$ is a number of characters starting from the
+		front of a string. Denote the $i$\textsuperscript{th} prefix by $X[i]$.
+\end{itemize}
+
+We are given $X = x_1,\dots,x_m$ and $Y = y_1,\dots,y_n$.
+
+Is the LCS unique? No.
+
+We take a look at the arrays, with indexes $i$ and $j$. If $x_{i} = y_{j}$,
+store it at $z_k$.
+
+We have a recurrance for LCS:
+\begin{equation}
+	C[i,j] = \begin{cases}
+		C[i-1,j=1]+1 & X[i] = Y[j]\\
+		\max \{C[i-1,j],C[i,j-1]\} & X[i]\neq Y[j]\\
+	\end{cases}
+\end{equation}
+
+\subsection{Example --- The Integer Knapsack Problem\slash 0-1 Knapsack problem}
+
+We previously saw the fractional knapsack problem. This is similar, but we can't
+put fractions of objects into the knapsack.
+
+We can see the greedy algorithm won't work.  We try dynamic programming.
+
+Imagine all objects numbered $1\dots n$. We specify score by letting $V[i,j]$ be
+the maximum value of the objects, selected from the first $i$ objects, that can
+fit into a knapsack with upper weight limit $j$. The final optimal solution will
+be in $V[n,W]$.
+
+\textbf{Key Observation}: We either use object $i$ or we do not.
+\begin{itemize}
+	\item Suppose $i$ is not in the knapsack. Then there is no difference
+		between $V[i-1,j]$ and $V[i,j]$.
+	\item Suppose object $i$ is in the knapsack.
+		\begin{itemize}
+			\item Claim: In this case $V[i,j] = V[i=1,j-w_i] + v_i$.
+		\end{itemize}
+\end{itemize}
+
+We have a recurrence
+\begin{equation}
+	V[i,j] = \max \{V[i-1,j], v_i + V[i-1,j-w_i]\}
+\end{equation}
+
+\end{document}
+% vim: tw=80
