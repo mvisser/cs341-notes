@@ -1,0 +1,86 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\begin{document}
+
+\title{CS 341 Notes}
+\author{Matthew Visser}
+\date{Oct 25, 2011}
+\maketitle
+
+\section{Triangular Stuff}
+
+How many triangles can we build with a specific base?
+
+
+\section{Designing Efficient Algorithms}
+
+\begin{itemize}
+	\item Divide and Conquer
+		\begin{itemize}
+			\item Divide the problem into subproblems, solve them recursively,
+				and combine.
+				\begin{itemize}
+					\item efficient
+					\item sometimes difficult to implement
+					\item overhead could be large
+				\end{itemize}
+			\item Hard to do runtime analysis
+			\item Solved
+				\begin{itemize}
+					\item sorting
+					\item multiplying numbers
+					\item matrix multiplication
+					\item closest pair
+					\item linear selection
+				\end{itemize}
+		\end{itemize}
+	\item Greedy Algorithms
+		\begin{itemize}
+			\item Take locally optimal choice in each step
+			\item Sometimes doesn't work
+			\item Must prove that it works --- this is hard
+			\item solved problems
+				\begin{itemize}
+					\item change
+					\item scheduling
+				\end{itemize}
+		\end{itemize}
+	\item Dynamic Programming
+		\begin{itemize}
+			\item Compute scores for subproblems organized in a large matrix
+			\item Challenge to come up with the right subproblem
+			\item Solved problems:
+				\begin{itemize}
+					\item General coin change problem
+					\item Longest common subsequence
+					\item knapsack
+					\item Shortest triangulation
+				\end{itemize}
+			\item Not very good efficiency often
+		\end{itemize}
+\end{itemize}
+
+\section{Graph Algorithms}
+
+The \textbf{degree} of a vertex $v$ denoted by $\texttt{deg}(v)$, is the number
+of edges that meet at $v$.
+
+We can represent graphs with pointers, but it's kind of gross.
+
+We cal also use an \emph{adjacency matrix}, which has an $n\times n$ matrix,
+where $n=|V|$, and mark non-zero at $i,j$ if $v_i$ ``points to'' $v_j$. If a
+graph is undirected, it must be symmetric.
+
+
+\end{document}
+% vim: tw=80
