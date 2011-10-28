@@ -1,0 +1,46 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\begin{document}
+
+\title{CS 341 Notes}
+\author{Matthew Visser}
+\date{Oct 27, 2011}
+\maketitle
+
+\section{Graph Algorithms}
+
+\subsection{Representing Graphs}
+
+$G = \left<V,E\right>$ where $V$ is a set of vertices, $E$ is a set of edges.
+Edges $e_i$ may be represented by pairs $(u,v)$ where $u$ and $v$ are vertices
+connected by $e$.
+
+If we have $|V| = n$ then $|E| = m, 0 \le m \in O(n^2)$
+
+A directed graph has $E$ as a set of ordered pairs.
+
+We define $\texttt{out}(v)$ as the cardinality of the set of edges leaving
+vertex $v$.  We define $\texttt{in}(v)$ as the cardinality of the set of edges
+entering vertex $v$.
+
+\subsection{Some Definitions}
+
+Recall the definitions for
+\begin{itemize}
+	\item path
+	\item cycle
+	\item connected graph
+\end{itemize}
+
+\end{document}
+% vim: tw=80
