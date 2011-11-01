@@ -1,0 +1,32 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\begin{document}
+
+\title{CS 341 Notes}
+\author{Matthew Visser}
+\date{Nov  1, 2011}
+\maketitle
+
+\section{FBS and DFS}
+
+We use the standard algorithm as described in the slides.
+
+An analysis:
+\begin{itemize}
+	\item Assume adjacency list representation --- $N(x) \in O(n)$.
+	\item Each vertex is queued once --- this implies $O(n)$.
+	\item Each edge is examined twice.
+\end{itemize}
+
+\end{document}
+% vim: tw=80
