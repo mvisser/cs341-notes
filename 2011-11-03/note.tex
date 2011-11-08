@@ -1,0 +1,85 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+\usepackage[colorlinks]{hyperref}
+
+\newtheorem{defn}{Definition}[section]
+
+\numberwithin{equation}{section}
+\begin{document}
+
+\title{CS 341 Notes}
+\author{Matthew Visser}
+\date{Nov  3, 2011}
+\maketitle
+
+\section{Graph Searching}
+
+\begin{defn}
+	A \textbf{bridge} is an edge that exists in all possible spanning trees.
+	If a bridge is removed, it will disconnect the graph.
+\end{defn}
+
+\begin{defn}
+	A \textbf{cut vertex} is a vertex that, when removed, causes the graph to be
+	disconnected.  They are also known as \textbf{articulation points}.
+	\label{cut-vertex}
+\end{defn}
+
+\subsection{DFS}
+
+A directed graph is a lot different.  Our spanning tree may not be connected
+even though there is a possible spanning tree that is connected.
+
+\begin{defn}
+	A \textbf{cross edge} is an edge that connects two connected parts of a
+	directed graph.
+\end{defn}
+
+\section{Articulations}
+
+See Definition \ref{cut-vertex}.
+
+\subsection{Motivation}
+\begin{itemize}
+	\item important in communication networks.
+	\item In traffic flow they identify places that will stop traffic between
+		two areas of a city if blocked.
+\end{itemize}
+
+\subsection{Finding Cut Vertices}
+
+The general idea is to find a node with which no descendant has a back edge to
+the node's parent.
+
+We need to computer \texttt{low[v]}.
+\begin{itemize}
+	\item Need another function defined on vertices
+	\item This quantity will be used in our articulation algorithm.
+\end{itemize}
+
+\begin{equation}
+	\texttt{low}[v] = \min\{d[v],d[z] \text{ s.t. }  (u,z) \text{ is a back edge
+	for some descendant $u$ of $v$.}
+	\label{eq:low}
+\end{equation}
+
+See an example of how to calculate this in the slides along with the algorithm.
+
+\subsection{Minimum Spanning Trees}
+
+With a weighted graph, we want a tree that has the smallest sum of edge values.
+
+Motivation: connecting machines with a minimum amount of wire, \textit{etc}.
+
+
+\end{document}
+% vim: tw=80

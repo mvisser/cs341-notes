@@ -1,0 +1,106 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+\usepackage{qtree}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+
+\begin{document}
+
+\title{CS 341 Notes}
+\author{Matthew Visser}
+\date{Nov  8, 2011}
+\maketitle
+
+\newtheorem{thm}{Theorem}
+
+\section{Graph Algorithms}
+\subsection{Articulations}
+
+Consider the spanning tree:
+\Tree [ .{$r$}  \qroof{children of 1}.1    \qroof{ children of 2 }.2   ]
+
+Then $r,1,2$ are vertices that when removed, the graph is diconnected if some
+conditions talked about last class are met.
+
+\subsection{Minimum Spanning Trees}
+
+\begin{description}
+	\item[Invariant:]  $T$ is a subgraph of some Minimum Spanning Tree (MST).
+	\item[Safe:] An edge $e$ is safe for $T$ if adding $e$ to $T$ maintains that
+		it is a subgraph of a MST.
+\end{description}
+
+$MST(G,w),\ G = (V,E),\ w: E \to \mathbb{R}$.
+
+$T$ = an empty graph.
+
+\begin{verbatim}
+while T is not a spanning tree do
+find a safe edge e
+add edge to T
+\end{verbatim}
+
+\begin{tabular}{p{0.5\textwidth}|p{0.5\textwidth}}
+	Kruskal & Prim\\
+	\hline
+	\begin{itemize}
+		\item grow a forest
+		\item Add edges with the least weight --- as long as they don't violate
+			the spanning tree condition.
+		\item Cost is $O(e)$
+	\end{itemize}
+	& \begin{itemize}
+		\item grow a single tree
+	\end{itemize}\\
+\end{tabular}
+
+\begin{algorithm}
+	\label{alg:kruskal}
+	\caption{Kruskal}
+	\begin{algorithmic}[1]
+		\STATE{$T \gets \emptyset$}
+		\FOR{$i \gets 1 \to m$}
+		\STATE{add edge if it doesn't violate spanning tree condition}
+		\ENDFOR
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{thm}
+	Kruskal's algorithm returns an MST.
+	\begin{proof}
+		Consider $e_1 \le e_2 \le \dots \le e_{k-1} \le e_k$. We will prove that
+		this is true by induction on $k$.
+
+		\textbf{Base Case:} $k=0$. Trivial
+
+		\textbf{Inductive Step:}
+
+		Consider 
+		\begin{equation}
+			T^*: e_1 \le e_2 \le e_3 \le \dots \le e_{k-1} \le e^*_k \le
+			e_{k+1}^* \le \dots \le e_{n-1}^*
+			\label{eq:pkrus1}
+		\end{equation}
+
+		Let $T' = T^* + e_k - e_j^*$. To do this, we have to subtract another edge that
+		exists on a loop that may exist with $e_k$ in it. We're swapping
+		the edge $e_k$ with $e_j^*$, and we also know that $e_k \le e_j^*$ since
+		neither are in the spanning tree yet and both can be added. $\therefore
+		T' \le T^*$ and the algorithm returns an MST.
+	\end{proof}
+\end{thm}
+
+
+
+
+\end{document}
+% vim: tw=80
