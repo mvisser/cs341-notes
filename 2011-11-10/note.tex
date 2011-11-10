@@ -1,0 +1,62 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\begin{document}
+
+\title{CS 341 Notes}
+\author{Matthew Visser}
+\date{Nov 10, 2011}
+\maketitle
+
+\section{Graph Algorithms}
+
+\subsection{Prim's Algorithm}
+
+\begin{enumerate}
+	\item Give each node an infinite cost except for our start node, which has 0.
+	\item Grab the vertext $V$ with the smallest cost.
+	\item For this node, update all its neighbors with $\min\{C,C(E)\}$ smallest
+		cost. The minimum of the cost at the node currently and the current node
+		plus the cost for the edge. Follow the edge with the smallest cost. if
+		that's the minimum.
+	\item Repeate at 2 until all nodes are visited.
+\end{enumerate}
+
+\subsection{Minimal Path}
+
+We want to start from a node and find the mimimum cost for a path from node $A$
+to node $B$.
+
+\textbf{Dykstra's Algorithm}
+
+\begin{enumerate}
+	\item Start at node $A$. Its cost is 0.
+	\item For each neighbor of the current node $N$, if the cost to get to $N$
+		plus the cost of the edge to the neighbor is less than the cost of the
+		neighbor, update to the new cost and mark it as reachable from $N$.
+	\item If the cost of the neighbor plus the cost of the edge is less, mark
+		this node as that cost and set it to reachable from the neighbor.
+	\item Repeat for vertex with lowest cost.
+\end{enumerate}
+
+Can we use this for negatives? No, because a negative edge could be taken
+infinitely many times and always reduce cost.
+
+\subsection{Floyd-Warshall}
+
+We can use dynamic programming to find this. Use a recursive definition with a
+base case of \texttt{cost}$(u,v,0)$. See notes for a better description, but the
+general idea is just recurse on path length. The running time is cubic. The
+first memory space we looked at was $O(n^3)$, but we can get away with $O(n^2)$.
+
+\end{document}
+% vim: tw=80
