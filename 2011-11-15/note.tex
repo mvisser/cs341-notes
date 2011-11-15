@@ -1,0 +1,78 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\begin{document}
+
+\title{CS 341 Notes}
+\author{Matthew Visser}
+\date{Nov 15, 2011}
+\maketitle
+
+\section{Graph Properties}
+
+For a graph $G$ with distinct edge weights\dots
+
+\begin{description}
+	\item[Cut Property] Let $S$ be any subset of nodes and let $e$ be the min
+		cost edge with exactly one endpoint in $S$. Then any MST contains $e$.
+		\begin{proof}
+			Let $T$ be an MST without the edge $e$.
+
+			Add $e$ to $T$. We have a cycle in the new graph $T'$. $e$ is in the
+			cut-set, and in a cycle, so it's in the intersection of the two as
+			well. There is an odd number of more edges that are in the cut set,
+			then. One of these edges must already be in $T$, since a spanning
+			tree is a connected graph. We can replace $f$ with $e$, and end up
+			with another spanning tree. Since $e$ has a weight smaller than $f$,
+			this tree has a smaller aggregate weight than $T$, therefore $T$ was
+			not a minimal spanning tree, a contradiction.
+
+			Therefore, the cut property holds.
+		\end{proof}
+	\item[Cycle Property]  Let $C$ be any cycle and let $e$ be the max cost edge
+		in $C$. Then every MST does not have edge $e$ in it.
+		\begin{proof}
+			Let $T$ be an MST with edge $e$ where $e$ has the maximal cost in a
+			cycle $C$. Delete $e$ from $T$ to create a cut $S$. Then there is a
+			cycle that crosses the cut set, meaning we have two edges that are
+			in the cycle and the cut set. Then there is at least one more edge,
+			$f$, but by assumption it has a smaller weight than $e$. Then we can
+			replace $e$ with $f$ in $T$ for a spanning tree with a smaller
+			weight, a contradiction, since $T$ is an MST.
+
+			Therefore the Cycle Property holds.
+		\end{proof}
+	\item[Cycle-Cut Intersection] A cycle and cut-set must intersect in an even
+		number of edges. This is because if a cycle edge crosses the cut, it
+		must cross back to complete the cycle.
+\end{description}
+
+\section{Other Problems}
+
+\subsection{Travelling Salesman Problem (TSP)}
+
+This is hard, but not provably.
+
+\subsection{Chess Game}
+
+To find out whether or not a colour can win, we must have vertices for every
+board state, and edges between them.  Look at the leaf nodes to see if black
+wins in one of these.
+
+\section{Algorithm Classification}
+
+We know that polynomial time $\iff$ efficient algorithm. Exponential and
+sub-exponential time is bad for algorithm run-time.
+
+
+\end{document}
+% vim: tw=80
