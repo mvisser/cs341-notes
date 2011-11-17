@@ -1,0 +1,61 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\begin{document}
+
+\title{CS 341 Notes}
+\author{Matthew Visser}
+\date{Nov 17, 2011}
+\maketitle
+
+\section{Algorithm Characterization}
+
+\begin{description}
+	\item[P] --- problems that we know we can solve in polynomial time.
+	\item[NP-hard] --- problems that we think don't have an efficient solution,
+		but can't prove so.
+\end{description}
+
+\subsection{Optimization vs. Decision Problems}
+
+\begin{itemize}
+	\item Optimization
+		\begin{itemize}
+			\item Find a value, object, or configuration that optimizes some
+				function, \textit{e.g.}, TSP
+		\end{itemize}
+	\item Decision
+		\begin{itemize}
+			\item Solution is a yes-or-no answer
+			\item Examples:
+				\begin{itemize}
+					\item Is a number prime?
+					\item In TSP-D, we are given a value $B$ and we want to know
+						whether there is a tour with length $\le B$.
+				\end{itemize}
+			\item NP-completeness theorey deals with decision problems.
+		\end{itemize}
+\end{itemize}
+
+\subsection{Non-Deterministic Algorithms}
+
+\begin{itemize}
+	\item Non-deterministic algorithms are only defined for decision problems.
+	\item Can do large searches in parallel, so without cost.
+	\item We know that if we have a \texttt{try} that is polynomial, the problem
+		is NP.
+	\item $P \subseteq NP$.
+\end{itemize}
+
+
+\end{document}
+% vim: tw=80
