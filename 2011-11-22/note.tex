@@ -1,0 +1,64 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\begin{document}
+
+\title{CS 341 Notes}
+\author{Matthew Visser}
+\date{Nov 22, 2011}
+\maketitle
+
+\section{$P = NP$}
+
+A decision problem $Q$ is in $P$ if there exists a polynomial time algorithm $A$
+that solves $Q$.
+
+A decision problem $Q$ is in $NP$ if there exists a non-deterministic polynomial
+time algoirthm $A$ that solves $Q$.
+
+\subsection{$P \subseteq NP$}
+
+All problems $P$ are also in $NP$. They simply never use the ``try'' statement
+in the pseudocode.
+
+Are there problems that are in $NP$ but not in $P$?
+\begin{itemize}
+	\item In other words, do we have $P \neq NP$?
+	\item Most famouse unsolved problem.
+\end{itemize}
+
+\subsection{Reduceability}
+
+A problem $P_x$ reduces to $P_y$ if we can find a mapping function
+$f:P_x \to P_y$ such that when $P_y$ answers yes, so does $P_x$ and vice versa.
+
+We say, then that
+\[
+P_x \leq_P P_y
+\]
+
+We know, then, that $P_x$ is no harder than $P_y$, except for some polynomial
+factor for the mapping $f$. This translates to
+\[
+P_y \in P \implies P_x \in P
+\]
+
+What about if $P_x \notin P$?
+\[
+P_x \notin P \implies P_y \notin P
+\]
+
+
+
+
+\end{document}
+% vim: tw=80
