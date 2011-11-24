@@ -1,0 +1,56 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\begin{document}
+
+\title{CS 341 Notes}
+\author{Matthew Visser}
+\date{Nov 24, 2011}
+\maketitle
+
+\section{More NP-Completeness}
+
+\subsection{Minimal Cover}
+
+Can convert 3-SAT to the minimal cover problem for graphs (see slides).
+
+\section{NP-Hard}
+
+A problem $Q$ is $NP$-hard iff for any problem $R$ in $NP$ we have $R\le_P Q$.
+Therefore:
+\begin{itemize}
+	\item Every problem in $NP$ is no harder than $Q$.
+\end{itemize}
+
+We don't restrict these problems to be decision problems.
+
+A problem is $NP$-hard if there is an $NP$-complete problem that reduces to it.
+
+Proving $Q$ is $NP$-complete.
+
+\begin{proof}
+
+	Here is an outline:
+	\begin{enumerate}
+		\item Choose problem $N$ known to be $NP$-complete.
+		\item Show that $N\le_P Q$
+			\begin{itemize}
+				\item Give polynomial time algorithm for transforming.
+				\item Show YES is YES
+				\item Show NO is NO
+			\end{itemize}
+		\item \dots
+	\end{enumerate}
+\end{proof}
+
+\end{document}
+% vim: tw=80
