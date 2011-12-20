@@ -1,0 +1,57 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\newtheorem{thm}{Theorem}
+\begin{document}
+
+\title{CS 341 Notes}
+\author{Matthew Visser}
+\date{Dec  1, 2011}
+\maketitle
+
+\section{Clique}
+
+\begin{description}
+	\item[Instance] A graph $G = (V,E)$ and a positive integer, $k$.
+	\item[Problem] Does $G$ contain a complete subgraph with at least $k$ vertices?
+\end{description}
+
+\begin{thm}
+	\begin{equation}
+		\textsc{3-Sat} \le_{P} \textsc{Clique}
+	\end{equation}
+\end{thm}
+
+\section{Cook Theorem}
+
+\begin{thm}
+	\textsc{Sat} is NP-Complete.
+	\begin{proof}
+		Sketch:
+
+		Say we have an NP-hard problem. We need to map every proglem to this
+		problem. To prove we have NP-hard, we need to prove that we have a
+		problem that is verifiable in polynomial time, but takes more than
+		polynomial time to compute.
+	\end{proof}
+\end{thm}
+
+\section{VC to HAM Reduction}
+
+Given an instance of VC, we construct a graph $H$ such that $H$ has a
+Hamiltonian circuit iff $G$ has a vertex cover of size $k$.
+
+Suppose that $H$ is a seperate graph that overlays $G$ and the circuit in $H$
+goes around each of the vertices in the cover.
+
+\end{document}
+% vim: tw=80
